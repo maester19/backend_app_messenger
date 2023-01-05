@@ -2,10 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const stuffRoutes = require("./routes/stuff")
-const userRoutes = require('./routes/user');
+const userRoutes = require('./routes/user')
+const msgRoutes = require("./routes/message")
 const path = require("path")
 
-mongoose.connect('mongodb://localhost:27017/db_test',
+mongoose.connect('mongodb://localhost:27017/test',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -23,5 +24,6 @@ app.use((req, res, next) => {
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/api/stuff", stuffRoutes)
 app.use("/api/auth", userRoutes)
+app.use("/api/message", msgRoutes)
 
 module.exports = app;
