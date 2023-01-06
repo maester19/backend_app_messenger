@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const repertoireSchema = mongoose.Schema({
+const statutSchema = mongoose.Schema({
   _id: { type: String, required: true },
   userId: { type: String, ref: "User", required: true },
   color: { type: String, required: true },
@@ -10,4 +10,4 @@ const repertoireSchema = mongoose.Schema({
   createdAt: { type: Date, required: true },
 }, { _id: false });
 
-module.exports = mongoose.model('Repertoire', repertoireSchema); 
+module.exports = mongoose.model('Statut', statutSchema); 

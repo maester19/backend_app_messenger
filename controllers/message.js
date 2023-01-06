@@ -1,4 +1,5 @@
 const Message = require("../models/Message")
+const mongoose = require("mongoose")
 const fs = require("fs")
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
             _id: objectID,
             ...doc,
             userId: req.auth.userId,
-            imageUrl: `${req.protocol}://${req.get('host')}/images/messages/${req.file.filename}`,
+            imageUrl: req.file?`${req.protocol}://${req.get('host')}/images/messages/${req.file.filename}`: "",
             createdAt: Date.now(),
             updateAt: Date.now()
         }

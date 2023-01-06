@@ -14,6 +14,8 @@ module.exports = {
           _id: objectId,
           name: req.body.name,
           phone: req.body.phone,
+          profilPic: req.file?`${req.protocol}://${req.get('host')}/images/user/profilPics${req.file.filename}`: "",
+          description: req.body.description,
           password: hash,
           createdAt: Date.now(),
           updatedAt: Date.now(),
@@ -43,7 +45,7 @@ module.exports = {
                         token: jwt.sign(
                             { userId: user._id },
                             "RANDOM_TOKEN_SECRET",
-                            { expiresIn: '24h' }
+                            // { expiresIn: '24h' }
                         )
                     });
                 })
@@ -85,13 +87,18 @@ module.exports = {
         const {
             name,
             phone,
-            password
+            password,
+            description,
+            listDisc
         } = req.body 
         
         let user = await User.findOne({ _id: req.params.id })
         
         user.name = name != undefined ? name : user.name
         user.phone = phone != undefined ? phone : user.phone
+        user.description = description != undefined ? description : user.description
+        user.listDisc = listDisc != undefined ? listDisc : user.listDisc
+        user.profilPic = req.file?`${req.protocol}://${req.get('host')}/images/user/profilPics${req.file.filename}`: "",
         user.password = password != undefined ? bcrypt.hash(password, 10) : user.password
         user.updatedAt = Date.now()
         
