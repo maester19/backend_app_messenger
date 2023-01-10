@@ -4,7 +4,7 @@ const app = express();
 const stuffRoutes = require("./routes/stuff")
 const userRoutes = require('./routes/user')
 const msgRoutes = require("./routes/message")
-const statutRoutes = require('./routes/statut')
+const conversationRoutes = require('./routes/conversation')
 const repertoireRoutes = require('./routes/repertoire')
 const path = require("path")
 
@@ -27,7 +27,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/api/stuff", stuffRoutes)
 app.use("/api/auth", userRoutes)
 app.use("/api/message", msgRoutes)
-app.use("/api/statut", statutRoutes)
+app.use("/api/conversation", conversationRoutes)
 app.use("/api/repertoire", repertoireRoutes)
 
 module.exports = app;

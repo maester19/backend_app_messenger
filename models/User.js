@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   _id: { type: String, required: true },
   name: { type: String, required: true },
   phone: { type: String, required: true, unique: true },
-  listDisc: [{ type: String, required: true }],
+  listDisc: [{ type: String, ref: "Conversation", required: true }],
   description: { type: String, required: false },
   profilPic: { type: String, required: false },
   password: { type: String, required: true },
