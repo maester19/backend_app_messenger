@@ -1,6 +1,8 @@
 const User = require("../models/User")
+const Repertoire = require("../models/Repertoire")
 const mongoose = require("mongoose")
 const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt")
 
 
 module.exports = {
@@ -16,13 +18,16 @@ module.exports = {
           phone: req.body.phone,
           profilPic: req.file?`${req.protocol}://${req.get('host')}/images/user/profilPics${req.file.filename}`: "",
           description: req.body.description,
+          listDisc: [],
           password: hash,
           createdAt: Date.now(),
           updatedAt: Date.now(),
         };
 
         let user = User.findOneAndUpdate({_id: doc._id}, JSON.parse(JSON.stringify(doc)), {upsert: true, new: true})
-        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+        .then(user => {
+            res.status(201).json({ message: 'Utilisateur créé !', user })
+        })
         .catch(error => res.status(400).json({ error }));
         console.log(user)
       })
@@ -33,7 +38,7 @@ module.exports = {
     User.findOne({ phone: req.body.phone })
         .then(user => {
             if (!user) {
-                return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
+                return res.status(201).json({ message: 'Paire login/mot de passe incorrecte'});
             }
             bcrypt.compare(req.body.password, user.password)
                 .then(valid => {

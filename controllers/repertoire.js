@@ -4,14 +4,12 @@ const fs = require("fs")
 
 module.exports = {
     create: async (req, res, next) => {
-        const doc = JSON.parse(req.body.repertoire)
-        delete doc.userId
+        const doc = req.body.repertoire
 
         let objectID = mongoose.Types.ObjectId().toString();
         const repertoire = {
             _id: objectID,
             ...doc,
-            userId: req.auth.userId,
             createdAt: Date.now(),
         }
 
@@ -40,6 +38,12 @@ module.exports = {
     getAll: async (req, res, next) => {
         await Repertoire.find()
         .then(repertoires => res.status(200).json( { repertoires } ))
+        .catch(error => res.status(404).json({ error }));
+    },
+    
+    getByUser: async (req, res, next) => {
+        await Repertoire.findOne({ UserId: req.params.id })
+        .then(repertoire => res.status(200).json({repertoire}))
         .catch(error => res.status(404).json({ error }));
     },
     
