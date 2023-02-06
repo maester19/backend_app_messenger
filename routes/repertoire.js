@@ -9,7 +9,7 @@ router.post('/', multer, repertoireCtrl.create);
 
 router.get('/:id', repertoireCtrl.getOne);
 
-router.put('/:id', auth, multer, repertoireCtrl.update);
+router.put('/:id', multer, repertoireCtrl.update);
 
 router.delete('/:id', auth, repertoireCtrl.delete);
 

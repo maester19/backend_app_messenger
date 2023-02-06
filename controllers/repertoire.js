@@ -21,16 +21,11 @@ module.exports = {
     update: async (req, res, next) => {
         const doc = { ...req.body };
       
-        delete doc._userId;
         await Repertoire.findOne({_id: req.params.id})
             .then((repertoire) => {
-                if (repertoire.userId != req.auth.userId) {
-                    res.status(401).json({ repertoire : 'Not authorized'});
-                } else {
-                    Repertoire.updateOne({ _id: req.params.id}, { ...doc, _id: req.params.id, createdAt: Date.now()})
+                Repertoire.updateOne({ _id: req.params.id}, { ...doc, _id: req.params.id, createdAt: Date.now()})
                     .then(() => res.status(200).json({repertoire : 'repertoire modifié!'}))
                     .catch(error => res.status(401).json({ error }));
-                }
             })
             .catch((error) => { res.status(400).json({ error }) });
     },
