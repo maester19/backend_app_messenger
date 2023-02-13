@@ -4,14 +4,13 @@ const fs = require("fs")
 
 module.exports = {
     create: async (req, res, next) => {
-        const doc = JSON.parse(req.body.message)
-        delete doc.userId
+        // const doc = JSON.parse(req.body.message)
+        const doc = req.body.message
 
         let objectID = mongoose.Types.ObjectId().toString();
         const message = {
             _id: objectID,
             ...doc,
-            userId: req.auth.userId,
             imageUrl: req.file?`${req.protocol}://${req.get('host')}/images/messages/${req.file.filename}`: "",
             createdAt: Date.now(),
             updateAt: Date.now()
@@ -43,8 +42,8 @@ module.exports = {
     },
     
     getAll: async (req, res, next) => {
-        await Message.find({ userId: req.auth.userId })
-        .then(messages => res.status(200).json( { messages: messages.find(recevedId == req.params.id) } ))
+        await Message.find({ userId: req.params.id })
+        .then(messages => res.status(200).json( { messages }))
         .catch(error => res.status(404).json({ error }));
     },
     

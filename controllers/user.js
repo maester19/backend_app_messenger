@@ -7,32 +7,33 @@ const bcrypt = require("bcrypt")
 
 module.exports = {
     signup: async(req, res, next) => {
-
-    let objectId = mongoose.Types.ObjectId().toString(); // create user id
-
-    bcrypt.hash(req.body.password, 10)
-      .then(hash => {
-        const doc = {
-          _id: objectId,
-          name: req.body.name,
-          phone: req.body.phone,
-          profilPic: req.file?`${req.protocol}://${req.get('host')}/images/user/profilPics${req.file.filename}`: "",
-          description: req.body.description,
-          listDisc: [],
-          password: hash,
-          createdAt: Date.now(),
-          updatedAt: Date.now(),
-        };
-
-        let user = User.findOneAndUpdate({_id: doc._id}, JSON.parse(JSON.stringify(doc)), {upsert: true, new: true})
-        .then(user => {
-            res.status(201).json({ message: 'Utilisateur créé !', user })
+        // let user = JSON.parse(req.body.user)
+        let objectId = mongoose.Types.ObjectId().toString(); // create user id
+        // console.log(user)
+        
+        bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            const doc = {
+            _id: objectId,
+            name: req.body.name,
+            phone: req.body.phone,
+            profilPic: req.file?`${req.protocol}://${req.get('host')}/images/user/profilPics${req.file.filename}`: "",
+            description: req.body.description,
+            listDisc: [],
+            password: hash,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+            };
+            console.log(doc)
+            let user = User.findOneAndUpdate({_id: doc._id}, JSON.parse(JSON.stringify(doc)), {upsert: true, new: true})
+            .then(user => {
+                res.status(201).json({ message: 'Utilisateur créé !', user })
+            })
+            .catch(error => res.status(400).json({ error }));
+            console.log(user)
         })
-        .catch(error => res.status(400).json({ error }));
-        console.log(user)
-      })
-      .catch(error => res.status(500).json({ error }));
-  },
+        .catch(error => res.status(500).json({ error }));
+    },
 
   login: async(req, res, next) => {
     User.findOne({ phone: req.body.phone })

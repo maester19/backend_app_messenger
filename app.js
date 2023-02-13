@@ -6,6 +6,7 @@ const userRoutes = require('./routes/user')
 const msgRoutes = require("./routes/message")
 const conversationRoutes = require('./routes/conversation')
 const repertoireRoutes = require('./routes/repertoire')
+const postRoutes = require('./routes/post')
 const path = require("path")
 
 mongoose.connect('mongodb://localhost:27017/test',
@@ -29,5 +30,6 @@ app.use("/api/auth", userRoutes)
 app.use("/api/message", msgRoutes)
 app.use("/api/conversation", conversationRoutes)
 app.use("/api/repertoire", repertoireRoutes)
+app.use("/api/post", postRoutes)
 
 module.exports = app;
